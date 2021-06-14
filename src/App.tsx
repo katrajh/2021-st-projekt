@@ -29,7 +29,7 @@ import { TrgovineFilter } from './trgovine/TrgovineFilter';
 
 import useLocalStorage from './users/useLocalStorage';
 import Login from './users/login/Login';
-import Logout from './users/Logout';
+import Logout from './users/logout/Logout';
 import { potrdi } from './stringValues';
 // import Menu from './menu';
 
@@ -60,8 +60,6 @@ function App() {
     return (
       <div className="App">
         <Menu token={token} odjava={odjava} />
-        {/* <Login setToken={setTokenValue} /> */}
-        {/* <RegisterForm potrdi={registerData} /> */}
 
         <Router>
           <Switch>

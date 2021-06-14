@@ -10,6 +10,7 @@ export default function Logout({ setToken }: { setToken: any }) {
       userType: ""
     };
     setToken(token);
+    window.location.href = `/prijava`; 
   };
 
   return (

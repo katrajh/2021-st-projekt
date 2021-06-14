@@ -21,19 +21,20 @@ export default function Login({ setToken }: { setToken: any }) {
     if (username === "admin" && password === "admin") {
       token.userType = "admin";
       setToken(token);
-      alert("Uspešno ste se prijavili")
+      alert("Uspešno ste se prijavili");
+      window.location.href = `/restavracije`; 
     }
     else if (username === "katarina" && password === "katarina") {
       token.userType = "user";
       setToken(token);
-      alert("Uspešno ste se prijavili")
+      alert("Uspešno ste se prijavili");
+      window.location.href = `/restavracije`; 
     }
     else {
       return (
-        alert("Napačno uporanbiško ime ali geslo. ")
-      );
+        alert("Napačno uporabniško ime ali geslo. ")
+      )
     }
-  
   };
 
   return (
