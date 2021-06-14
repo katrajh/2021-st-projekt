@@ -10,10 +10,17 @@ var stringValues = {
   ponoviGeslo: "Ponovite geslo",
   drzava: "Država",
   potrdi: "Potrdi",
-  nayaj: "Nazaj",
+  nazaj: "Nazaj",
   naprej: "Naprej",
-  restavracije: "Restavracije"
-
+  restavracije: "Restavracije",
+  naziv: "Naziv",
+  regija: "Regija",
+  naslov: "Naslov",
+  dodajRestavracijo: "Dodaj restavracijo",
+  dodaj: "Dodaj",
+  trgovine: "Trgovine",
+  delovniCas: "Delovni čas",
+  dodajTrgovino: "Dodaj trgovino"
 };
 
 module.exports = stringValues;

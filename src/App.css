@@ -36,3 +36,21 @@
     transform: rotate(360deg);
   }
 }
+
+.error-msg {
+  color: red;
+  font-size: smaller;
+  padding: 5px;
+}
+
+.error-msg-2 {
+  color: #61d234;
+  font-size: smaller;
+  padding: 5px;
+}
+
+.msg {
+  color: #61d234;
+  font-size: smaller;
+  padding: 5px;
+}

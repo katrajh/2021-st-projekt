@@ -14,19 +14,21 @@ export interface IUser {
   uporabniskoIme: string;
   email: string;
   geslo: string;
+  gesloPonovitev: string;
   drzava: string;
 }
 
 export interface ILogin {
-  uporabniskomIme: string,
+  uporabniskoIme: string,
   geslo: string
 }
-
-axios.defaults.withCredentials = true;
 
 export const useUsers = () => {
 
   const [users, setUsers] = useState<IUser[]>([]);
+
+  // axios.defaults.withCredentials = true;
+
   const getUsers = async () => {
     try {
       // const data = await axios.get(`${apiUrl}/uporabnik`);
@@ -50,40 +52,44 @@ export const useUsers = () => {
     user.geslo=gesloString;
 
     try {
-      const { data } = await axios.post(`${apiUrl}/uporabnik/register`, { user });
+      const { data } = await axios.post(`${apiUrl}/uporabnik/register`, user);
       setUsers(prev => [...prev, data]);
+      window.location.href = `/registracija`;   // da se osveži stran
     } catch (error) {
       console.log(error);
     }
   }
 
   //! TEST register
-  const register = async (user: IUser) => {
-    axios.post(`${apiUrl}/uporabnik/register`, {
-      user 
-    }).then((response) => {
-      console.log(response);
-    })
-  }
+  // const register = async (user: IUser) => {
+  //   axios.post(`${apiUrl}/uporabnik/register`, {
+  //     user 
+  //   }).then((response) => {
+  //     console.log(response);
+  //   })
+  // }
 
   const [loginStatus, setLoginStatus] = useState("");
 
   //* LOGIN POST
-  const loginData = async (userLogin: ILogin) => {
+  const loginData = async (loginUser: ILogin) => {
 
     // Encrypt geslo for login
     var mykey = crypto.createCipher('aes-128-cbc', 'mypassword');
-    var gesloString = mykey.update(userLogin.geslo, 'utf8', 'hex');
+    var gesloString = mykey.update(loginUser.geslo, 'utf8', 'hex');
     gesloString += mykey.final('hex');
 
-    userLogin.geslo = gesloString;
+    loginUser.geslo = gesloString;
+
+    console.log("useUser_GESLO: "+loginUser.geslo);
 
     try {
-      const { data } = await axios.post(`${apiUrl}/uporabnik/login`, { userLogin });
+      // const { data } = await axios.post(`${apiUrl}/uporabnik/login`, { uporabniskoIme: uporabniskoIme, geslo: geslo });
+      const { data } = await axios.post(`${apiUrl}/uporabnik/login`, loginUser);
       setUsers(prev => [...prev, data]);
       if (data.length > 0) {
         console.log({ data: data });
-        setLoginStatus(data[0].uporabniskoIme);
+        // setLoginStatus(data[0].uporabniskoIme);
       }
       else {
         setLoginStatus("Wrong username/password combination!");
@@ -120,8 +126,10 @@ export const useUsers = () => {
     getUsers();
     axios.get(`${apiUrl}/uporabnik/login`).then((response) => {
       console.log(response);
+      // console.log(response.data.user[0]);
+      // setLoginStatus(response.data[0]);
     })
   }, []);
 
-  return { users, registerData, loginData, loginStatus, register, updateUser, deleteUser };
+  return { users, registerData, loginData, loginStatus, updateUser, deleteUser };
 };

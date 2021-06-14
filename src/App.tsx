@@ -7,57 +7,175 @@ import {
   // Link
 } from "react-router-dom";
 
+import React from 'react';
+
 import { useUsers } from './users/useUsers';
 import { Menu } from './menuTemplate';
-import { GetUsersAsList } from './users/getUsersAll';
+import { UsersAsList } from './users/UsersAllList';
 import { RegisterForm } from './users/register/RegisterForm';
 import { LoginForm } from './users/login/LoginForm';
 
-// const List: FC<{ users: IUser[] }> = ({ users }) => {
-//   return <div>{users.length}</div>
-// }
+import { AddRestaurantForm } from './restavracije/AddRestaurantForm';
+import { useRestaurant } from './restavracije/useRestaurants';
+import { GetRestaurantAsList } from './restavracije/RestaurantsAllList';
+import { RestaurantFilter } from './restavracije/RestaurantsFilter';
+import { PodrobnostiRestavracije } from './restavracije/restaurantDetails';
 
+import { AddTrgovinaForm } from './trgovine/AddTrgovinaForm';
+import { useTrgovine } from './trgovine/useTrgovine';
+import { GetTrgovinaAsList } from './trgovine/TrgovinaAsList';
+import { PodrobnostiTrgovine } from './trgovine/TrgovinaDetails';
+import { TrgovineFilter } from './trgovine/TrgovineFilter';
+
+import useLocalStorage from './users/useLocalStorage';
+import Login from './users/login/Login';
+import Logout from './users/Logout';
+import { potrdi } from './stringValues';
+// import Menu from './menu';
+
+//#region 
 function App() {
 
-  const { users, registerData, loginData, loginStatus, register, updateUser, deleteUser } = useUsers();
-  
-  return (
-    <div>
+  const { users, registerData, loginData, loginStatus, updateUser, deleteUser } = useUsers();
 
+  const { restaurants, postRestaurant, updateRestaurant, deleteRestaurant } = useRestaurant();
+
+  const { trgovine, postTrgovina, updateTrgovina, deleteTrgovina } = useTrgovine();
+
+  const [token, setTokenValue] = useLocalStorage("token", "");
+
+  const tmpToken = {
+    username: "",
+    password: "",
+    userType: ""
+  };
+
+  const odjava = (value: boolean) => {
+    if (value) {
+      setTokenValue(tmpToken);
+    }
+  };
+
+  if ((token.username === "" && token.password === "") || !token) {
+    return (
+      <div className="App">
+        <Menu token={token} odjava={odjava} />
+        {/* <Login setToken={setTokenValue} /> */}
+        {/* <RegisterForm potrdi={registerData} /> */}
+
+        <Router>
+          <Switch>
+            <Route path="/prijava">
+              {/* <LoginForm potrdi={loginData} setToken={setTokenValue} /> */}
+              <Login setToken={setTokenValue} />
+            </Route>
+            <Route path="/registracija">
+              <RegisterForm potrdi={registerData} />
+            </Route>
+          </Switch>
+        </Router>
+      </div>
+    )
+  };
+
+  console.log({token});
+
+  return (
+    <div className="App">
+
+      <Menu token={token} odjava={odjava} />
       <Router>
         <Switch>
+          {/* <Route path="/prijava/">
+            <Login setToken={setTokenValue} />
+          </Route> */}
           <Route path="/pocivalisce/">
-            <Menu />
-            <p>Kličem pocivalisce</p>
           </Route>
           <Route path="/profil/">
-            <Menu />
-            <p>Kličem profil</p>
+            {/* <Menu /> */}
           </Route>
           <Route path="/pocivalisca/">
-            <Menu />
-            <p>Kličem pocivalisca</p>
+            {/* <Menu /> */}
           </Route>
           <Route path="/priljubljena/">
-            <Menu />
-            <p>Kličem priljubljena</p>
+            {/* <Menu /> */}
           </Route>
-          <Route path="/registracija/">
-            <Menu />
-            <p>Kličem registracija</p>
-            <RegisterForm potrdi={registerData} />
-            {/* <RegisterForm onSubmit={register} />  */}
+          {/* <Route path="/registracija/">
+            {/* <Menu /> */}
+          {/* <RegisterForm potrdi={registerData} /> */}
+          {/* </Route> */}
+
+          {/* RESTAVRACIJE START */}
+          <Route path="/restavracije/dodaj">
+            {/* <Menu /> */}
+            <AddRestaurantForm potrdi={postRestaurant}/>
           </Route>
-          <Route path="/prijava/">
-            <Menu />
-            <p>Kličem prijava</p>
-            <LoginForm potrdi={loginData}/>
-            <h1>Login status: {loginStatus}</h1>
+          {/* <Route path="/restavracije/regija/:id"> */}
+          {/* <Menu /> */}
+          {/* <AddRestaurantForm potrdi={postRestaurant} /> */}
+          {/* <RestaurantCoulmnFilter restaurants={restaurants} /> */}
+          {/* </Route> */}
+          <Route path="/restavracije/regija/stajerska">
+            <RestaurantFilter restaurants={restaurants} />
           </Route>
+          <Route path="/restavracije/regija/savinjska">
+            <RestaurantFilter restaurants={restaurants} />
+          </Route>
+          <Route path="/restavracije/regija/osrednjeslovenska">
+            <RestaurantFilter restaurants={restaurants} />
+          </Route>
+          <Route path="/restavracije/:id">
+            {/* <Menu /> */}
+            <PodrobnostiRestavracije
+              restaurant={restaurants}
+              updateRestaurant={updateRestaurant}
+              deleteRestaurant={deleteRestaurant}
+            />
+          </Route>
+          <Route path="/restavracije/">
+            <GetRestaurantAsList restaurants={restaurants} token={token} />
+          </Route>
+          {/* RESTAVRACIJE END */}
+
+          {/* TRGOVINE START */}
+          <Route path="/trgovine/dodaj">
+            {/* <Menu /> */}
+            <AddTrgovinaForm potrdi={postTrgovina} />
+          </Route>
+          <Route path="/trgovine/regija/stajerska">
+            <TrgovineFilter trgovine={trgovine} />
+          </Route>
+          <Route path="/trgovine/regija/savinjska">
+            <TrgovineFilter trgovine={trgovine} />
+          </Route>
+          <Route path="/trgovine/regija/osrednjeslovenska">
+            <TrgovineFilter trgovine={trgovine} />
+          </Route>
+          <Route path="/trgovine/:id">
+            {/* <Menu /> */}
+            <PodrobnostiTrgovine
+              trgovina={trgovine}
+              updateTrgovina={updateTrgovina}
+              deleteTrgovina={deleteTrgovina}
+            />
+          </Route>
+          <Route path="/trgovine/">
+            {/* <Menu /> */}
+            <GetTrgovinaAsList trgovina={trgovine} token={token} />
+          </Route>
+          {/* TRGOVINE END */}
+
+          {/* <Route path="/prijava/"> */}
+          {/* <Menu /> */}
+          {/* <LoginForm potrdi={loginData} /> */}
+          {/* <h1>Login status: {loginStatus}</h1> */}
+          {/* </Route> */}
           <Route path="/seznam/">
-            <Menu />
-            <p>Kličem seznam</p>
-            <GetUsersAsList users={users} />
+            {/* <Menu /> */}
+            <UsersAsList users={users} />
+          </Route>
+          <Route path="/odjava/">
+            <Logout setToken={setTokenValue} />
           </Route>
         </Switch>
       </Router>
@@ -79,5 +197,6 @@ function App() {
   );
 
 }
+//#endregion
 
 export default App;

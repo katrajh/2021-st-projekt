@@ -4,7 +4,7 @@ import { IUser} from "./useUsers";
 import string from '../stringValues.js';
 
 // Izpis podatkov
-export const GetUsersAsList: FC<{ users: IUser[] }> = ({ users }) => {
+export const UsersAsList: FC<{ users: IUser[] }> = ({ users }) => {
   return (
     // <ul>
     //   {users.map((user) => (
