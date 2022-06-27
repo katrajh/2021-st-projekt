@@ -5,7 +5,7 @@ import { IRestaurant } from "./useRestaurants";
 import string from '../stringValues';
 import { useRestaurant } from './useRestaurants';
 
-export const PodrobnostiRestavracije: FC<{ restaurant: IRestaurant[], updateRestaurant: any, deleteRestaurant: any  }> = ({ restaurant, updateRestaurant, deleteRestaurant }) => {
+export const PodrobnostiRestavracije: FC<{ restaurant: IRestaurant[], updateRestaurant: any, deleteRestaurant: any, token: any  }> = ({ restaurant, updateRestaurant, deleteRestaurant, token }) => {
   
     const { register, handleSubmit } = useForm<IRestaurant>();
 
@@ -79,6 +79,7 @@ export const PodrobnostiRestavracije: FC<{ restaurant: IRestaurant[], updateRest
 
           <br />
 
+          {(token.userType === "admin") ?
           <div className="row gumbBrisiPosodobi">
             <div className="col gumbPosodobi">
               <button type="submit" className="btn btn-success btn-sm">
@@ -98,6 +99,7 @@ export const PodrobnostiRestavracije: FC<{ restaurant: IRestaurant[], updateRest
               </Link>
             </div>
           </div>
+          : null }
         </form>
 
         <br />

@@ -128,6 +128,7 @@ function App() {
               restaurant={restaurants}
               updateRestaurant={updateRestaurant}
               deleteRestaurant={deleteRestaurant}
+              token={token}
             />
           </Route>
           <Route path="/restavracije/">
@@ -155,6 +156,7 @@ function App() {
               trgovina={trgovine}
               updateTrgovina={updateTrgovina}
               deleteTrgovina={deleteTrgovina}
+              token={token}
             />
           </Route>
           <Route path="/trgovine/">
